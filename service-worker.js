@@ -1,5 +1,5 @@
 const CACHE_NAME = "voddic-burglar-cache-v1";
-const urlsToCache = ["/", "/index.html", "/app.js", "/manifest.json"];
+const urlsToCache = ["/", "/index.html", "/app.js", "/manifest.json", "/icon-192x192.png", "/icon-512x512.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

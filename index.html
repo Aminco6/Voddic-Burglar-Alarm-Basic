@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESP Configurator</title>
+  <link rel="manifest" href="manifest.json">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <h1>ESP8266 Configurator</h1>
+  <form id="settingsForm">
+    <label>
+      Activation Delay (ms):
+      <input type="number" id="activationDelay" required>
+    </label>
+    <br>
+    <label>
+      Alarm Duration (ms):
+      <input type="number" id="alarmDuration" required>
+    </label>
+    <br>
+    <label>
+      Recheck Delay (ms):
+      <input type="number" id="recheckDelay" required>
+    </label>
+    <br>
+    <button type="submit">Update Settings</button>
+  </form>
+  <p id="status"></p>
+</body>
+</html>

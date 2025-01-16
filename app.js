@@ -1,22 +1,22 @@
-let deferredPrompt; // Store the prompt event
-const installButton = document.getElementById('installButton'); // The button to trigger installation
+let deferredPrompt;
+const installButton = document.getElementById('installButton');
 
+// Show the install button when the PWA is installable
 window.addEventListener('beforeinstallprompt', (event) => {
-  // Prevent the default prompt from showing up
+  // Prevent the mini-info bar from appearing
   event.preventDefault();
-  
   // Stash the event so it can be triggered later
   deferredPrompt = event;
 
-  // Show the install button
+  // Make the install button visible
   installButton.style.display = 'block';
 
-  // Add event listener for install button
+  // Add click event for the install button
   installButton.addEventListener('click', () => {
-    // Show the prompt when the button is clicked
+    // Show the install prompt when the button is clicked
     deferredPrompt.prompt();
     
-    // Wait for the user's response to the prompt
+    // Wait for the user's choice
     deferredPrompt.userChoice
       .then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {

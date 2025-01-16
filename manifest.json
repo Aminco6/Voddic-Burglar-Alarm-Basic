@@ -1,7 +1,7 @@
 {
   "name": "Voddic Burglar Alarm",
   "short_name": "Burglar Alarm",
-  "start_url": "/index.html",
+  "start_url": "/Voddic-Burglar-Alarm-Basic/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",

@@ -1,32 +1,29 @@
-const form = document.getElementById("settingsForm");
-const statusText = document.getElementById("status");
+let deferredPrompt;
+const installButton = document.getElementById('installButton');
 
-form.addEventListener("submit", async (event) => {
+window.addEventListener('beforeinstallprompt', (event) => {
+  // Prevent the default mini-info bar or prompt from appearing
   event.preventDefault();
+  
+  // Stash the event so it can be triggered later
+  deferredPrompt = event;
 
-  const activationDelay = document.getElementById("activationDelay").value;
-  const alarmDuration = document.getElementById("alarmDuration").value;
-  const recheckDelay = document.getElementById("recheckDelay").value;
+  // Show the install button or custom pop-up
+  installButton.style.display = 'block';
 
-  const data = {
-    activationDelay: parseInt(activationDelay),
-    alarmDuration: parseInt(alarmDuration),
-    recheckDelay: parseInt(recheckDelay),
-  };
+  installButton.addEventListener('click', () => {
+    // Show the prompt
+    deferredPrompt.prompt();
 
-  try {
-    const response = await fetch("http://192.168.4.1/update-settings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-
-    if (response.ok) {
-      statusText.textContent = "Settings updated successfully!";
-    } else {
-      statusText.textContent = "Failed to update settings.";
-    }
-  } catch (error) {
-    statusText.textContent = "Error connecting to ESP8266.";
-  }
+    // Wait for the user's response
+    deferredPrompt.userChoice
+      .then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the A2HS prompt');
+        } else {
+          console.log('User dismissed the A2HS prompt');
+        }
+        deferredPrompt = null;
+      });
+  });
 });

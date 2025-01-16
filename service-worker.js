@@ -1,4 +1,4 @@
-const CACHE_NAME = "esp-config-cache";
+const CACHE_NAME = "voddic-burglar-cache-v1";
 const urlsToCache = ["/", "/index.html", "/app.js", "/manifest.json"];
 
 self.addEventListener("install", (event) => {

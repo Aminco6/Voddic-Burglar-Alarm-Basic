@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <link rel="manifest" href="manifest.json">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voddic Burglar Alarm Configurator</title>
+  
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -83,41 +85,22 @@
   </div>
 
   <script src="app.js"></script>
-</body>
-</html>
 
-<script>
-  
-const passwordForm = document.getElementById('passwordForm');
+  <script>
+   const passwordForm = document.getElementById('passwordForm');
 const settingsForm = document.getElementById('settingsForm');
 const statusMessage = document.getElementById('status');
 
+let storedPassword = ''; // Temporary placeholder for the password
+
 // Save Password
-passwordForm.addEventListener('submit', async (event) => {
+passwordForm.addEventListener('submit', (event) => {
   event.preventDefault();
   const password = document.getElementById('password').value;
-
-  try {
-    // Send password to ESP8266 for storage
-    const response = await fetch('http://192.168.4.1/set-password', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
-    });
-
-    if (response.ok) {
-      passwordForm.style.display = 'none';
-      settingsForm.style.display = 'block';
-      statusMessage.textContent = 'Password set successfully!';
-      statusMessage.style.color = 'green';
-    } else {
-      throw new Error('Failed to set password');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    statusMessage.textContent = 'Error setting password.';
-    statusMessage.style.color = 'red';
-  }
+  storedPassword = password; // In a real implementation, send this to the ESP8266 for storage
+  passwordForm.style.display = 'none';
+  settingsForm.style.display = 'block';
+  statusMessage.textContent = 'Password set successfully!';
 });
 
 // Update Settings
@@ -129,33 +112,43 @@ settingsForm.addEventListener('submit', async (event) => {
   const recheckDelay = document.getElementById('recheckDelay').value;
   const verifyPassword = document.getElementById('verifyPassword').value;
 
+  // Verify password
+  if (verifyPassword !== storedPassword) {
+    statusMessage.textContent = 'Incorrect password. Settings not updated.';
+    statusMessage.style.color = 'red';
+    return;
+  }
+
+  // Construct the payload
+  const data = {
+    activationDelay: activationDelay,
+    alarmDuration: alarmDuration,
+    recheckDelay: recheckDelay,
+    password: verifyPassword, // Include the password for validation
+  };
+
   try {
-    // Verify password and update settings
+    // Send data to ESP8266 (replace with the actual ESP8266 IP)
     const response = await fetch('http://192.168.4.1/update-settings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        activationDelay,
-        alarmDuration,
-        recheckDelay,
-        password: verifyPassword,
-      }),
+      body: JSON.stringify(data),
     });
 
     if (response.ok) {
       statusMessage.textContent = 'Settings updated successfully!';
       statusMessage.style.color = 'green';
     } else {
-      throw new Error('Incorrect password or failed to update settings');
+      statusMessage.textContent = 'Failed to update settings.';
+      statusMessage.style.color = 'red';
     }
   } catch (error) {
     console.error('Error:', error);
-    statusMessage.textContent = 'Failed to update settings.';
+    statusMessage.textContent = 'Error communicating with device.';
     statusMessage.style.color = 'red';
   }
 });
-  
     
-</script>
+  </script>
 </body>
 </html>

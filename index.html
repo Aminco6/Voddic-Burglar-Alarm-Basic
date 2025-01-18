@@ -85,7 +85,7 @@
 
   <script src="app.js"></script>
 
-<script>
+  <script>
 const passwordForm = document.getElementById('passwordForm');
 const settingsForm = document.getElementById('settingsForm');
 const statusMessage = document.getElementById('status');
@@ -147,12 +147,42 @@ settingsForm.addEventListener('submit', async (event) => {
     statusMessage.style.color = 'red';
   }
 });
-  
 
-    
-  </script>
+// PWA Installation Code
+let deferredPrompt; // Placeholder for the install event
 
-  
+// Listen for the beforeinstallprompt event
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the default mini-infobar from appearing
+  e.preventDefault();
+  deferredPrompt = e; // Store the event for later
+  showInstallPrompt(); // Optionally show a custom install button
+});
+
+// Function to display the install prompt immediately
+function showInstallPrompt() {
+  if (deferredPrompt) {
+    // Show the install prompt to the user
+    deferredPrompt.prompt();
+
+    // Wait for the user to respond to the prompt
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the A2HS prompt');
+      } else {
+        console.log('User dismissed the A2HS prompt');
+      }
+      deferredPrompt = null; // Reset the deferredPrompt
+    });
+  }
+}
+
+// Log when the app is successfully installed
+window.addEventListener('appinstalled', () => {
+  console.log('App successfully installed');
+});
+</script>
+
 </body>
 </html>
 

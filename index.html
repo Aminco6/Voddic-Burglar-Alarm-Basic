@@ -109,79 +109,76 @@
     <p id="status" class="hidden">Settings updated successfully!</p>
   </div>
 
-  <!-- JavaScript for ESP8266 Communication -->
-  <script>
-    const form = document.getElementById('settingsForm');
-    const statusMessage = document.getElementById('status');
+<script>
+  
+const passwordForm = document.getElementById('passwordForm');
+const settingsForm = document.getElementById('settingsForm');
+const statusMessage = document.getElementById('status');
 
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
+// Save Password
+passwordForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const password = document.getElementById('password').value;
 
-      const activationDelay = document.getElementById('activationDelay').value;
-      const alarmDuration = document.getElementById('alarmDuration').value;
-      const recheckDelay = document.getElementById('recheckDelay').value;
-
-      // Construct the payload
-      const data = {
-        activationDelay: activationDelay,
-        alarmDuration: alarmDuration,
-        recheckDelay: recheckDelay,
-      };
-
-      try {
-        // Send data to ESP8266 (replace IP with your ESP8266's IP)
-        const response = await fetch('http://192.168.4.1/update-settings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-
-        if (response.ok) {
-          statusMessage.textContent = 'Settings updated successfully!';
-          statusMessage.classList.remove('hidden');
-        } else {
-          statusMessage.textContent = 'Failed to update settings. Try again!';
-          statusMessage.classList.add('hidden');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        statusMessage.textContent = 'Error communicating with device.';
-        statusMessage.classList.remove('hidden');
-      }
+  try {
+    // Send password to ESP8266 for storage
+    const response = await fetch('http://192.168.4.1/set-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password }),
     });
 
-    // Service Worker Registration for PWA
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js')
-          .then((registration) => {
-            console.log('Service Worker registered:', registration.scope);
-          })
-          .catch((error) => {
-            console.error('Service Worker registration failed:', error);
-          });
-      });
+    if (response.ok) {
+      passwordForm.style.display = 'none';
+      settingsForm.style.display = 'block';
+      statusMessage.textContent = 'Password set successfully!';
+      statusMessage.style.color = 'green';
+    } else {
+      throw new Error('Failed to set password');
     }
+  } catch (error) {
+    console.error('Error:', error);
+    statusMessage.textContent = 'Error setting password.';
+    statusMessage.style.color = 'red';
+  }
+});
 
-    // Automatically prompt the user to install the PWA
-    let deferredPrompt;
+// Update Settings
+settingsForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-      // Prevent the mini-infobar from appearing on mobile
-      e.preventDefault();
-      deferredPrompt = e;
+  const activationDelay = document.getElementById('activationDelay').value;
+  const alarmDuration = document.getElementById('alarmDuration').value;
+  const recheckDelay = document.getElementById('recheckDelay').value;
+  const verifyPassword = document.getElementById('verifyPassword').value;
 
-      // Automatically show the A2HS prompt
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
-        } else {
-          console.log('User dismissed the install prompt');
-        }
-        deferredPrompt = null;
-      });
+  try {
+    // Verify password and update settings
+    const response = await fetch('http://192.168.4.1/update-settings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        activationDelay,
+        alarmDuration,
+        recheckDelay,
+        password: verifyPassword,
+      }),
     });
-  </script>
+
+    if (response.ok) {
+      statusMessage.textContent = 'Settings updated successfully!';
+      statusMessage.style.color = 'green';
+    } else {
+      throw new Error('Incorrect password or failed to update settings');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    statusMessage.textContent = 'Failed to update settings.';
+    statusMessage.style.color = 'red';
+  }
+});
+  
+    
+</script>
 </body>
 </html>

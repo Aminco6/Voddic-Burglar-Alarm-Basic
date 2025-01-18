@@ -1,22 +1,20 @@
-const CACHE_NAME = "voddic-burglar-cache-v1";
-const urlsToCache = [
+const cacheName = "voddic-burglar-config-v1";
+const assetsToCache = [
   "/Voddic-Burglar-Alarm-Basic/", // Main URL path
   "/Voddic-Burglar-Alarm-Basic/index.html",
   "/Voddic-Burglar-Alarm-Basic/app.js",
   "/Voddic-Burglar-Alarm-Basic/manifest.json",
-  "/Voddic-Burglar-Alarm-Basic/icon-placeholder.png"
+  "/Voddic-Burglar-Alarm-Basic/VODDICS.png"
 ];
 
-// Installing service worker
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache);
+    caches.open(cacheName).then((cache) => {
+      return cache.addAll(assetsToCache);
     })
   );
 });
 
-// Fetching from cache
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {

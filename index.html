@@ -4,186 +4,186 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voddic Burglar Alarm Configurator</title>
-   <link rel="manifest" href="manifest.json">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Manifest Link -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Basic Styling -->
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    .container {
-      max-width: 500px;
-      margin: auto;
+      font-family: 'Source Sans Pro', sans-serif;
+      margin: 0;
       padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      background-color: #f9f9f9;
+      background-color: #f4f4f4;
     }
+
     h1 {
       text-align: center;
+      color: #333;
     }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
     label {
-      font-weight: bold;
+      font-weight: 600;
       display: block;
-      margin-top: 10px;
+      margin-top: 15px;
     }
-    input, select, button {
+
+    select, button {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
+      font-size: 16px;
     }
+
     button {
       background-color: #007bff;
       color: white;
-      font-size: 16px;
+      border: none;
+      cursor: pointer;
     }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
     #status {
-      margin-top: 10px;
-      font-weight: bold;
-      color: green;
+      margin-top: 15px;
       text-align: center;
+      color: green;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
+  <h1>Voddic Burglar Alarm Configurator</h1>
+  
   <div class="container">
-    <h1>Voddic Configurator</h1>
-    <form id="passwordForm">
-      <label for="password">Set Password:</label>
-      <input type="password" id="password" placeholder="Enter a new password" required>
-      <button type="submit">Save Password</button>
-    </form>
-
-    <form id="settingsForm" style="display:none;">
+    <form id="settingsForm">
       <label for="activationDelay">Activation Delay (ms):</label>
       <select id="activationDelay">
         <option value="0">0 seconds</option>
         <option value="30000">30 seconds</option>
         <option value="60000">1 minute</option>
+        <option value="90000">1 min 30 secs</option>
+        <option value="120000">2 minutes</option>
       </select>
 
       <label for="alarmDuration">Alarm Duration (ms):</label>
       <select id="alarmDuration">
         <option value="60000">1 minute</option>
         <option value="120000">2 minutes</option>
+        <option value="180000">3 minutes</option>
+        <option value="300000">5 minutes</option>
       </select>
 
       <label for="recheckDelay">Recheck Delay (ms):</label>
       <select id="recheckDelay">
         <option value="0">0 seconds</option>
         <option value="30000">30 seconds</option>
+        <option value="60000">1 minute</option>
+        <option value="90000">1 min 30 secs</option>
+        <option value="120000">2 minutes</option>
       </select>
 
-      <label for="verifyPassword">Enter Password:</label>
-      <input type="password" id="verifyPassword" placeholder="Enter your password" required>
       <button type="submit">Update Settings</button>
     </form>
 
-    <p id="status"></p>
+    <p id="status" class="hidden">Settings updated successfully!</p>
   </div>
 
-  <script src="app.js"></script>
-
+  <!-- JavaScript for ESP8266 Communication -->
   <script>
-const passwordForm = document.getElementById('passwordForm');
-const settingsForm = document.getElementById('settingsForm');
-const statusMessage = document.getElementById('status');
+    const form = document.getElementById('settingsForm');
+    const statusMessage = document.getElementById('status');
 
-let storedPassword = ''; // Temporary placeholder for the password
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
 
-// Save Password
-passwordForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const password = document.getElementById('password').value;
-  storedPassword = password; // In a real implementation, send this to the ESP8266 for storage
-  passwordForm.style.display = 'none';
-  settingsForm.style.display = 'block';
-  statusMessage.textContent = 'Password set successfully!';
-});
+      const activationDelay = document.getElementById('activationDelay').value;
+      const alarmDuration = document.getElementById('alarmDuration').value;
+      const recheckDelay = document.getElementById('recheckDelay').value;
 
-// Update Settings
-settingsForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
+      // Construct the payload
+      const data = {
+        activationDelay: activationDelay,
+        alarmDuration: alarmDuration,
+        recheckDelay: recheckDelay,
+      };
 
-  const activationDelay = document.getElementById('activationDelay').value;
-  const alarmDuration = document.getElementById('alarmDuration').value;
-  const recheckDelay = document.getElementById('recheckDelay').value;
-  const verifyPassword = document.getElementById('verifyPassword').value;
+      try {
+        // Send data to ESP8266 (replace IP with your ESP8266's IP)
+        const response = await fetch('http://192.168.4.1/update-settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
 
-  // Verify password
-  if (verifyPassword !== storedPassword) {
-    statusMessage.textContent = 'Incorrect password. Settings not updated.';
-    statusMessage.style.color = 'red';
-    return;
-  }
-
-  // Construct the payload
-  const data = {
-    activationDelay: activationDelay,
-    alarmDuration: alarmDuration,
-    recheckDelay: recheckDelay,
-    password: verifyPassword, // Include the password for validation
-  };
-
-  try {
-    // Send data to ESP8266 (replace with the actual ESP8266 IP)
-    const response = await fetch('http://192.168.4.1/update-settings', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-
-    if (response.ok) {
-      statusMessage.textContent = 'Settings updated successfully!';
-      statusMessage.style.color = 'green';
-    } else {
-      statusMessage.textContent = 'Failed to update settings.';
-      statusMessage.style.color = 'red';
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    statusMessage.textContent = 'Error communicating with device.';
-    statusMessage.style.color = 'red';
-  }
-});
-
-// PWA Installation Code
-let deferredPrompt; // Placeholder for the install event
-
-// Listen for the beforeinstallprompt event
-window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevent the default mini-infobar from appearing
-  e.preventDefault();
-  deferredPrompt = e; // Store the event for later
-  showInstallPrompt(); // Optionally show a custom install button
-});
-
-// Function to display the install prompt immediately
-function showInstallPrompt() {
-  if (deferredPrompt) {
-    // Show the install prompt to the user
-    deferredPrompt.prompt();
-
-    // Wait for the user to respond to the prompt
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the A2HS prompt');
-      } else {
-        console.log('User dismissed the A2HS prompt');
+        if (response.ok) {
+          statusMessage.textContent = 'Settings updated successfully!';
+          statusMessage.classList.remove('hidden');
+        } else {
+          statusMessage.textContent = 'Failed to update settings. Try again!';
+          statusMessage.classList.add('hidden');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        statusMessage.textContent = 'Error communicating with device.';
+        statusMessage.classList.remove('hidden');
       }
-      deferredPrompt = null; // Reset the deferredPrompt
     });
-  }
-}
 
-// Log when the app is successfully installed
-window.addEventListener('appinstalled', () => {
-  console.log('App successfully installed');
-});
-</script>
+    // Service Worker Registration for PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registered:', registration.scope);
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
+      });
+    }
 
+    // PWA Install Prompt
+    let deferredPrompt;
+    const installButton = document.getElementById('installButton');
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installButton.style.display = 'block';
+
+      installButton.addEventListener('click', () => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+          } else {
+            console.log('User dismissed the install prompt');
+          }
+          deferredPrompt = null;
+        });
+      });
+    });
+  </script>
 </body>
 </html>
-
- 

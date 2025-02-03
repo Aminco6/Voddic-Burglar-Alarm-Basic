@@ -53,6 +53,25 @@
       margin-top: 20px;
       font-size: 18px;
     }
+
+#whatsappButton {
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  padding: 10px 20px;
+  background-color: #25D366; /* WhatsApp color */
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+#whatsappButton:hover {
+  background-color: #128C7E;
+}
+
+
+    
   </style>
 </head>
 <body>
@@ -96,6 +115,9 @@
       <input type="password" id="verifyPassword" placeholder="Enter your password" required>
       <button type="submit">Update Settings</button>
     </form>
+
+      <!-- WhatsApp Button -->
+<a id="whatsappButton" href="https://wa.me/yourwhatsappphonenumber" target="_blank">Contact us on WhatsApp</a>
 
     <p id="status"></p>
   </div>

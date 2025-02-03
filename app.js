@@ -21,7 +21,9 @@ const appContainer = document.getElementById("appContainer");
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  installButton.style.display = "block";  // Show the install button
+
+  // Show the install button when the beforeinstallprompt is triggered
+  installButton.style.display = "block";  
 
   installButton.addEventListener("click", () => {
     deferredPrompt.prompt();
@@ -38,18 +40,15 @@ window.addEventListener("beforeinstallprompt", (e) => {
   });
 });
 
+// Check if app is installed or not
 function checkInstallationStatus() {
-  const installButton = document.getElementById("installButton");
-  const preInstallContent = document.getElementById("preInstallContent");
-  const appContainer = document.getElementById("appContainer");
-
   if (window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true) {
     console.log("App is running in standalone mode");
 
-    // Hide install section and show app settings
-    installButton.style.display = "none";
+    // Hide install section and show app content
+    installButton.style.display = "none"; 
     preInstallContent.style.display = "none";  // Hide video & text
-    appContainer.style.display = "block";
+    appContainer.style.display = "block"; // Show app content after installation
   } else {
     console.log("App is NOT installed yet");
 
@@ -60,4 +59,5 @@ function checkInstallationStatus() {
   }
 }
 
+// Immediately check installation status when the page loads
 checkInstallationStatus();

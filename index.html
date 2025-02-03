@@ -10,6 +10,7 @@
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
+      text-align: center;
     }
     .container {
       max-width: 500px;
@@ -18,6 +19,7 @@
       border: 1px solid #ccc;
       border-radius: 10px;
       background-color: #f9f9f9;
+      display: none; /* Hidden until app is installed */
     }
     h1 {
       text-align: center;
@@ -38,6 +40,7 @@
       background-color: #007bff;
       color: white;
       font-size: 16px;
+      cursor: pointer;
     }
     #status {
       margin-top: 10px;
@@ -45,12 +48,24 @@
       color: green;
       text-align: center;
     }
+    #installButton {
+      display: none; /* Initially hidden */
+      margin-top: 20px;
+      font-size: 18px;
+    }
   </style>
 </head>
 <body>
-      <img src="./voddic-secured.png" alt="VODDIC Logo" width="350" height="200">
-  <div class="container">
+
+  <img src="./voddic-secured.png" alt="VODDIC Logo" width="350" height="200">
+
+  <!-- Install App Button -->
+  <button id="installButton">Install App</button>
+
+  <!-- App Content (Hidden Until Installed) -->
+  <div class="container" id="appContainer">
     <h1>Voddic Anti Burglar Alarm</h1>
+
     <form id="passwordForm">
       <label for="password">Set Password:</label>
       <input type="password" id="password" placeholder="Enter a new password" required>
@@ -82,76 +97,10 @@
       <button type="submit">Update Settings</button>
     </form>
 
-    <button id="installButton" style="display: none;">Install App</button>
-
     <p id="status"></p>
   </div>
 
   <script src="app.js"></script>
 
-  <script>
-   const passwordForm = document.getElementById('passwordForm');
-const settingsForm = document.getElementById('settingsForm');
-const statusMessage = document.getElementById('status');
-
-let storedPassword = ''; // Temporary placeholder for the password
-
-// Save Password
-passwordForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const password = document.getElementById('password').value;
-  storedPassword = password; // In a real implementation, send this to the ESP8266 for storage
-  passwordForm.style.display = 'none';
-  settingsForm.style.display = 'block';
-  statusMessage.textContent = 'Password set successfully!';
-});
-
-// Update Settings
-settingsForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-
-  const activationDelay = document.getElementById('activationDelay').value;
-  const alarmDuration = document.getElementById('alarmDuration').value;
-  const recheckDelay = document.getElementById('recheckDelay').value;
-  const verifyPassword = document.getElementById('verifyPassword').value;
-
-  // Verify password
-  if (verifyPassword !== storedPassword) {
-    statusMessage.textContent = 'Incorrect password. Settings not updated.';
-    statusMessage.style.color = 'red';
-    return;
-  }
-
-  // Construct the payload
-  const data = {
-    activationDelay: activationDelay,
-    alarmDuration: alarmDuration,
-    recheckDelay: recheckDelay,
-    password: verifyPassword, // Include the password for validation
-  };
-
-  try {
-    // Send data to ESP8266 (replace with the actual ESP8266 IP)
-    const response = await fetch('http://192.168.4.1/update-settings', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-
-    if (response.ok) {
-      statusMessage.textContent = 'Settings updated successfully!';
-      statusMessage.style.color = 'green';
-    } else {
-      statusMessage.textContent = 'Failed to update settings.';
-      statusMessage.style.color = 'red';
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    statusMessage.textContent = 'Error communicating with device.';
-    statusMessage.style.color = 'red';
-  }
-});
-    
-  </script>
 </body>
 </html>

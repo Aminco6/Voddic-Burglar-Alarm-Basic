@@ -1,106 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <link rel="manifest" href="manifest.json">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Voddic Burglar Alarm Configurator</title>
-  
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      text-align: center;
-    }
-    .container {
-      max-width: 500px;
-      margin: auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      background-color: #f9f9f9;
-      display: none; /* Hidden until app is installed */
-    }
-    h1 {
-      text-align: center;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 10px;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button {
-      background-color: #007bff;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    #status {
-      margin-top: 10px;
-      font-weight: bold;
-      color: green;
-      text-align: center;
-    }
-    #installButton {
-      display: none; /* Initially hidden */
-      margin-top: 20px;
-      font-size: 18px;
-    }
-  </style>
-</head>
-<body>
-
+<div class="container" id="appContainer">
   <img src="./voddic-secured.png" alt="VODDIC Logo" width="350" height="200">
 
-  <!-- Install App Button -->
-  <button id="installButton">Install App</button>
+  <!-- Content visible before installation -->
+  <div id="preInstallContent">
+    <iframe width="100%" height="200" 
+      src="https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1&mute=1" 
+      title="Voddic Alarm Video" frameborder="0" allowfullscreen>
+    </iframe>
 
-  <!-- App Content (Hidden Until Installed) -->
-  <div class="container" id="appContainer">
-    <h1>Voddic Anti Burglar Alarm</h1>
+    <p style="text-align: center; font-size: 18px; font-weight: bold;">
+      Secure your home with Voddic Burglar Alarm! Detects movement and alerts instantly.
+    </p>
 
-    <form id="passwordForm">
-      <label for="password">Set Password:</label>
-      <input type="password" id="password" placeholder="Enter a new password" required>
-      <button type="submit">Save Password</button>
-    </form>
-
-    <form id="settingsForm" style="display:none;">
-      <label for="activationDelay">Activation Delay (ms):</label>
-      <select id="activationDelay">
-        <option value="0">0 seconds</option>
-        <option value="30000">30 seconds</option>
-        <option value="60000">1 minute</option>
-      </select>
-
-      <label for="alarmDuration">Alarm Duration (ms):</label>
-      <select id="alarmDuration">
-        <option value="60000">1 minute</option>
-        <option value="120000">2 minutes</option>
-      </select>
-
-      <label for="recheckDelay">Recheck Delay (ms):</label>
-      <select id="recheckDelay">
-        <option value="0">0 seconds</option>
-        <option value="30000">30 seconds</option>
-      </select>
-
-      <label for="verifyPassword">Enter Password:</label>
-      <input type="password" id="verifyPassword" placeholder="Enter your password" required>
-      <button type="submit">Update Settings</button>
-    </form>
-
-    <p id="status"></p>
+    <button id="installButton" style="display: none;">Install App</button>
   </div>
 
-  <script src="app.js"></script>
+  <!-- WhatsApp Button (Always Visible) -->
+  <a href="https://wa.me/09076495671" target="_blank">
+    <button style="background-color: green; color: white; font-size: 16px; margin-top: 10px;">
+      WhatsApp Us
+    </button>
+  </a>
 
-</body>
-</html>
+  <!-- Main App Content (Hidden before installation) -->
+  <form id="passwordForm" style="display: none;">
+    <label for="password">Set Password:</label>
+    <input type="password" id="password" placeholder="Enter a new password" required>
+    <button type="submit">Save Password</button>
+  </form>
+
+  <form id="settingsForm" style="display: none;">
+    <label for="activationDelay">Activation Delay (ms):</label>
+    <select id="activationDelay">
+      <option value="0">0 seconds</option>
+      <option value="30000">30 seconds</option>
+      <option value="60000">1 minute</option>
+    </select>
+
+    <label for="alarmDuration">Alarm Duration (ms):</label>
+    <select id="alarmDuration">
+      <option value="60000">1 minute</option>
+      <option value="120000">2 minutes</option>
+    </select>
+
+    <label for="recheckDelay">Recheck Delay (ms):</label>
+    <select id="recheckDelay">
+      <option value="0">0 seconds</option>
+      <option value="30000">30 seconds</option>
+    </select>
+
+    <label for="verifyPassword">Enter Password:</label>
+    <input type="password" id="verifyPassword" placeholder="Enter your password" required>
+    <button type="submit">Update Settings</button>
+  </form>
+
+  <p id="status"></p>
+</div>

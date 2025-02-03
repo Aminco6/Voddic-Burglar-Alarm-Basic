@@ -1,11 +1,16 @@
 // Function to check if PWA is installed
 function checkInstallationStatus() {
-  if (window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true) {
-    document.getElementById("appContainer").style.display = "block"; // Show main app
-    document.getElementById("installButton").style.display = "none"; // Hide install button
+  const installButton = document.getElementById("installButton");
+  const appContainer = document.getElementById("appContainer");
+
+  if (window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true) {
+    console.log("App is running in standalone mode");
+    installButton.style.display = "none"; // Hide install button
+    appContainer.style.display = "block"; // Show app content
   } else {
-    document.getElementById("installButton").style.display = "block"; // Show install button
-    document.getElementById("appContainer").style.display = "none"; // Hide main app
+    console.log("App is NOT installed yet");
+    installButton.style.display = "block"; // Show install button
+    appContainer.style.display = "none"; // Hide app container until installed
   }
 }
 
@@ -31,7 +36,7 @@ window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
 
-  // Show install button only if the app is not installed
+  // Ensure correct UI state
   checkInstallationStatus();
 
   installButton.addEventListener("click", () => {
@@ -58,5 +63,8 @@ window.addEventListener("appinstalled", () => {
   checkInstallationStatus();
 });
 
-// Run check on page load
-window.addEventListener("load", checkInstallationStatus);
+// Ensure correct UI on page load
+window.addEventListener("load", () => {
+  document.getElementById("appContainer").style.display = "block"; // Show content on first visit
+  checkInstallationStatus();
+});

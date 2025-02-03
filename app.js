@@ -15,6 +15,8 @@ if ("serviceWorker" in navigator) {
 // PWA Installation Prompt Handling
 let deferredPrompt;
 const installButton = document.getElementById("installButton");
+const preInstallContent = document.getElementById("preInstallContent");
+const appContainer = document.getElementById("appContainer");
 
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
@@ -36,20 +38,18 @@ window.addEventListener("beforeinstallprompt", (e) => {
   });
 });
 
-// Check if PWA is Installed & Adjust UI Accordingly
 function checkInstallationStatus() {
+  const installButton = document.getElementById("installButton");
   const preInstallContent = document.getElementById("preInstallContent");
   const appContainer = document.getElementById("appContainer");
-  const passwordForm = document.getElementById("passwordForm");
 
   if (window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true) {
     console.log("App is running in standalone mode");
 
-    // Hide pre-install content and show app settings
+    // Hide install section and show app settings
     installButton.style.display = "none";
-    preInstallContent.style.display = "none"; // Hide video & text
+    preInstallContent.style.display = "none";  // Hide video & text
     appContainer.style.display = "block";
-    passwordForm.style.display = "block"; // Show password form
   } else {
     console.log("App is NOT installed yet");
 
@@ -60,5 +60,4 @@ function checkInstallationStatus() {
   }
 }
 
-// Run check on page load
-window.addEventListener("load", checkInstallationStatus);
+checkInstallationStatus();

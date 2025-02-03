@@ -21,7 +21,7 @@ const appContainer = document.getElementById("appContainer");
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
-
+  
   // Show the install button when the beforeinstallprompt is triggered
   installButton.style.display = "block";  
 

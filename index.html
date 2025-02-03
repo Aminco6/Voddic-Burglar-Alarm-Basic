@@ -1,3 +1,24 @@
+<style>
+
+#whatsappButton {
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  padding: 10px 20px;
+  background-color: #25D366; /* WhatsApp color */
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+#whatsappButton:hover {
+  background-color: #128C7E;
+}
+  
+</style>
+
+
 <div class="container" id="appContainer">
   <img src="./voddic-secured.png" alt="VODDIC Logo" width="350" height="200">
 
@@ -12,14 +33,12 @@
   <p style="text-align: center;">Watch the demo video of the Voddic Anti Burglar Alarm!</p>
 </div>
 
-    
-    
-  <!-- WhatsApp Button (Always Visible) -->
-  <a href="https://wa.me/09076495671" target="_blank">
-    <button style="background-color: green; color: white; font-size: 16px; margin-top: 10px;">
-      WhatsApp Us
-    </button>
-  </a>
+    <button id="installButton" style="display: none;">Install App</button>
+
+<!-- WhatsApp Button -->
+<a id="whatsappButton" href="https://wa.me/https://wa.me/09076495671" target="_blank">Contact us on WhatsApp</a>
+  
+  
 
   <!-- Main App Content (Hidden before installation) -->
   <form id="passwordForm" style="display: none;">

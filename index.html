@@ -2,141 +2,113 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <link rel="manifest" href="manifest.json">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voddic Burglar Alarm Configurator</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
   
+  <!-- Manifest Link -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Basic Styling -->
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      text-align: center;
-    }
-    .container {
-      max-width: 500px;
-      margin: auto;
+      font-family: 'Source Sans Pro', sans-serif;
+      margin: 0;
       padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      background-color: #f9f9f9;
-      display: none; /* Hidden until app is installed */
+      background-color: #f4f4f4;
     }
+
     h1 {
       text-align: center;
+      color: #333;
     }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
     label {
-      font-weight: bold;
+      font-weight: 600;
       display: block;
-      margin-top: 10px;
+      margin-top: 15px;
     }
-    input, select, button {
+
+    select, button {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
+      font-size: 16px;
     }
+
     button {
       background-color: #007bff;
       color: white;
-      font-size: 16px;
+      border: none;
       cursor: pointer;
     }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
     #status {
-      margin-top: 10px;
-      font-weight: bold;
-      color: green;
+      margin-top: 15px;
       text-align: center;
-    }
-    #installButton {
-      display: none; /* Initially hidden */
-      margin-top: 20px;
-      font-size: 18px;
+      color: green;
+      font-weight: bold;
     }
 
-#whatsappButton {
-  display: block;
-  margin: 20px auto;
-  text-align: center;
-  padding: 10px 20px;
-  background-color: #25D366; /* WhatsApp color */
-  color: white;
-  border-radius: 5px;
-  font-size: 16px;
-  text-decoration: none;
-}
-
-#whatsappButton:hover {
-  background-color: #128C7E;
-}
-
-
-    
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
-
-  <img src="./voddic-secured.png" alt="VODDIC Logo" width="350" height="200">
-
-  <!-- Install App Button -->
+  <h1>Voddic Burglar Alarm Configurator</h1>
   
-  <button id="installButton">Install Our App</button>
-
-  <!-- App Content (Hidden Until Installed) -->
-  <div class="container" id="appContainer">
-    <h1>Voddic Anti Burglar Alarm</h1>
-
-    <form id="passwordForm">
-      <label for="password">Set Password:</label>
-      <input type="password" id="password" placeholder="Enter a new password" required>
-      <button type="submit">Save Password</button>
-    </form>
-
-    <form id="settingsForm" style="display:none;">
+  <div class="container">
+    <form id="settingsForm">
       <label for="activationDelay">Activation Delay (ms):</label>
       <select id="activationDelay">
         <option value="0">0 seconds</option>
         <option value="30000">30 seconds</option>
         <option value="60000">1 minute</option>
+        <option value="90000">1 min 30 secs</option>
+        <option value="120000">2 minutes</option>
       </select>
 
       <label for="alarmDuration">Alarm Duration (ms):</label>
       <select id="alarmDuration">
         <option value="60000">1 minute</option>
         <option value="120000">2 minutes</option>
+        <option value="180000">3 minutes</option>
+        <option value="300000">5 minutes</option>
       </select>
 
       <label for="recheckDelay">Recheck Delay (ms):</label>
       <select id="recheckDelay">
         <option value="0">0 seconds</option>
         <option value="30000">30 seconds</option>
+        <option value="60000">1 minute</option>
+        <option value="90000">1 min 30 secs</option>
+        <option value="120000">2 minutes</option>
       </select>
 
-      <label for="verifyPassword">Enter Password:</label>
-      <input type="password" id="verifyPassword" placeholder="Enter your password" required>
       <button type="submit">Update Settings</button>
     </form>
 
-      
-    <p id="status"></p>
+    <p id="status" class="hidden">Settings updated successfully!</p>
   </div>
 
-
-<img src="./Photoroom-20250125_074900.png" alt="VODDIC Logo" id="pic" width="350" height="200">
-  <p style="text-align: center;">Click the install button above to install Voddic Anti Burglar Alarm System!</p>
-
-  <!-- WhatsApp Button -->
-<a id="whatsappButton" href="https://wa.me/09076495671" target="_blank">Contact us on WhatsApp</a>
-  
-</div>
-  <script src="app.js"></script>
-
-
-
-  <script>
-    
-
-    
   <!-- JavaScript for ESP8266 Communication -->
   <script>
     const form = document.getElementById('settingsForm');
@@ -210,9 +182,6 @@
         deferredPrompt = null;
       });
     });
-
-    
   </script>
-
 </body>
 </html>

@@ -12,19 +12,24 @@
       margin: 20px;
       text-align: center;
     }
-    .container {
-  max-width: 500px;
+.container {
+  max-width: 90%; /* Make it more flexible for small screens */
+  max-width: 500px; /* Keep it limited on larger screens */
   margin: auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  text-align: center; /* Ensures all content inside is centered */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Ensures all content inside is centered */
 }
 
 .container img {
-  display: block; 
-  margin: 0 auto; /* Centers image horizontally */
+  max-width: 100%; /* Ensures image resizes properly */
+  height: auto; /* Maintain aspect ratio */
+  display: block;
 }
     h1 {
       text-align: center;

@@ -1,240 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Voddic Burglar Alarm Configurator</title>
-  <link rel="manifest" href="manifest.json">
-  
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      text-align: center;
-    }
-    .container {
-      max-width: 60%;
-      max-width: 500px;
-      margin: auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      background-color: #f9f9f9;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .container img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-    }
-    h1 {
-      text-align: center;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 10px;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button {
-      background-color: #007bff;
-      color: white;
-      font-size: 16px;
-    }
-    #status {
-      margin-top: 10px;
-      font-weight: bold;
-      color: green;
-      text-align: center;
-    }
-    #whatsappButton {
-      display: block;
-      margin: 20px auto;
-      padding: 10px 20px;
-      background-color: #25D366;
-      color: white;
-      border-radius: 5px;
-      font-size: 16px;
-      text-decoration: none;
-    }
-    #whatsappButton:hover {
-      background-color: #128C7E;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voddic Burglar Alarm Configurator</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script defer src="/script.js"></script>
+    <link rel="manifest" href="manifest.json">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+        }
+        #status {
+            margin-top: 10px;
+            font-weight: bold;
+            color: green;
+            text-align: center;
+        }
+        #whatsappButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #25D366;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        #whatsappButton:hover {
+            background-color: #128C7E;
+        }
+    </style>
 </head>
 <body>
-
-  <div class="container" id="appContainer">
-    <img src="./voddic-secured.png" alt="Voddic-Secured" width="350" height="200">
-    <h1>Voddic Configurator</h1>
+    <h1>Voddic Alarm PWA</h1>
+    <p>Working fully offline!</p>
     
-    <button id="installButton" style="display: none;">Install App</button>
+    <div class="container" id="appContainer">
+        <img src="./voddic-secured.png" alt="Voddic-Secured" width="350" height="200">
+        <h1>Voddic Configurator</h1>
+        
+        <button id="installButton" style="display: none;">Install App</button>
 
-    <form id="passwordForm">
-      <label for="password">Set Password:</label>
-      <input type="password" id="password" placeholder="Enter a new password" required>
-      <button type="submit">Save Password</button>
-    </form>
+        <form id="passwordForm">
+            <label for="password">Set Password:</label>
+            <input type="password" id="password" placeholder="Enter a new password" required>
+            <button type="submit">Save Password</button>
+        </form>
 
-    <form id="settingsForm" style="display:none;">
-      <label for="activationDelay">Activation Delay (ms):</label>
-      <select id="activationDelay">
-        <option value="0">0 seconds</option>
-        <option value="30000">30 seconds</option>
-        <option value="60000">1 minute</option>
-      </select>
+        <form id="settingsForm" style="display:none;">
+            <label for="activationDelay">Activation Delay (ms):</label>
+            <select id="activationDelay">
+                <option value="0">0 seconds</option>
+                <option value="30000">30 seconds</option>
+                <option value="60000">1 minute</option>
+            </select>
 
-      <label for="alarmDuration">Alarm Duration (ms):</label>
-      <select id="alarmDuration">
-        <option value="60000">1 minute</option>
-        <option value="120000">2 minutes</option>
-      </select>
+            <label for="alarmDuration">Alarm Duration (ms):</label>
+            <select id="alarmDuration">
+                <option value="60000">1 minute</option>
+                <option value="120000">2 minutes</option>
+            </select>
 
-      <label for="recheckDelay">Recheck Delay (ms):</label>
-      <select id="recheckDelay">
-        <option value="0">0 seconds</option>
-        <option value="30000">30 seconds</option>
-      </select>
+            <label for="recheckDelay">Recheck Delay (ms):</label>
+            <select id="recheckDelay">
+                <option value="0">0 seconds</option>
+                <option value="30000">30 seconds</option>
+            </select>
 
-      <label for="verifyPassword">Enter Password:</label>
-      <input type="password" id="verifyPassword" placeholder="Enter your password" required>
-      <button type="submit">Update Settings</button>
-    </form>
+            <label for="verifyPassword">Enter Password:</label>
+            <input type="password" id="verifyPassword" placeholder="Enter your password" required>
+            <button type="submit">Update Settings</button>
+        </form>
 
-    <a id="whatsappButton" href="https://wa.me/09076495671" target="_blank">Contact us on WhatsApp</a>
+        <a id="whatsappButton" href="https://wa.me/09076495671" target="_blank">Contact us on WhatsApp</a>
 
-    <p id="status"></p>
-  </div>
+        <p id="status"></p>
+    </div>
 
-  <script>
-    // Service Worker Registration
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker
-          .register("service-worker.js")
-          .then((registration) => {
-            console.log("Service Worker registered:", registration.scope);
-          })
-          .catch((error) => {
-            console.error("Service Worker registration failed:", error);
-          });
-      });
-    }
-
-    // DOM Elements
-    const installButton = document.getElementById("installButton");
-    const appContainer = document.getElementById("appContainer");
-    const passwordForm = document.getElementById("passwordForm");
-    const settingsForm = document.getElementById("settingsForm");
-    const statusMessage = document.getElementById("status");
-
-    // PWA Installation Prompt Handling
-    let deferredPrompt;
-
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installButton.style.display = "block"; // Show install button
-
-      installButton.addEventListener("click", () => {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === "accepted") {
-            console.log("User accepted the install prompt.");
-            installButton.style.display = "none"; // Hide install button
-            checkInstallationStatus(); // Update UI after installation
-          } else {
-            console.log("User dismissed the install prompt.");
-          }
-          deferredPrompt = null;
-        });
-      });
-    });
-
-    // Check if PWA is Installed
-    function checkInstallationStatus() {
-      if (window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true) {
-        console.log("App is running in standalone mode");
-
-        if (installButton) installButton.style.display = "none"; // Hide install button
-        if (appContainer) appContainer.style.display = "block";
-        if (passwordForm) passwordForm.style.display = "block";
-      } else {
-        console.log("App is NOT installed yet");
-        if (installButton) installButton.style.display = "block";
-      }
-    }
-
-    checkInstallationStatus();
-
-    // Password and Settings Logic
-    let storedPassword = ""; // Placeholder for the password
-
-    // Save Password
-    passwordForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const password = document.getElementById("password").value;
-      storedPassword = password; // Store password temporarily
-      
-      passwordForm.style.display = "none";
-      settingsForm.style.display = "block";
-      statusMessage.textContent = "Password set successfully!";
-      statusMessage.style.color = "green";
-    });
-
-    // Update Settings
-    settingsForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const activationDelay = document.getElementById("activationDelay").value;
-      const alarmDuration = document.getElementById("alarmDuration").value;
-      const recheckDelay = document.getElementById("recheckDelay").value;
-      const verifyPassword = document.getElementById("verifyPassword").value;
-
-      if (verifyPassword !== storedPassword) {
-        statusMessage.textContent = "Incorrect password. Settings not updated.";
-        statusMessage.style.color = "red";
-        return;
-      }
-
-      const data = {
-        activationDelay: activationDelay,
-        alarmDuration: alarmDuration,
-        recheckDelay: recheckDelay,
-        password: verifyPassword,
-      };
-
-      try {
-        // Send settings to ESP8266 via HTTP (ensure ESP IP is correct)
-        const response = await fetch("http://192.168.4.1/update-settings", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
-
-        if (response.ok) {
-          statusMessage.textContent = "Settings updated successfully!";
-          statusMessage.style.color = "green";
-        } else {
-          statusMessage.textContent = "Failed to update settings.";
-          statusMessage.style.color = "red";
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("/service-worker.js")
+                .then(() => console.log("Service Worker Registered"))
+                .catch((err) => console.log("Service Worker Registration Failed:", err));
         }
-      } catch (error) {
-        console.error("Error:", error);
-        statusMessage.textContent = "Error communicating with device.";
-        statusMessage.style.color = "red";
-      }
-    });
-  </script>
-
+    </script>
 </body>
 </html>

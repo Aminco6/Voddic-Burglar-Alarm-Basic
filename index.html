@@ -218,7 +218,9 @@
 
       try {
         // Send settings to ESP8266 via HTTP (ensure ESP IP is correct)
-        const response = await fetch("http://192.168.4.1/update-settings", {
+        
+        const response = await fetch("http://alarm.voddic.com.ng/update-settings", {  // ✅ Use subdomain
+
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),

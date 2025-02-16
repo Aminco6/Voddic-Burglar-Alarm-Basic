@@ -1,5 +1,5 @@
-const cacheName = "voddic-burglar-config-v2";
-const assetsToCache = [
+const CACHE_NAME = "alarm-pwa-v2";
+const CACHE_ASSETS = [
   "/", // Main URL path
   "/index.html",
   "/app.js",
@@ -7,30 +7,37 @@ const assetsToCache = [
   "/VODDICS.png"
 ];
 
+// Install event - Cache necessary files
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(cacheName).then((cache) => {
-      return cache.addAll(assetsToCache);
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log("Caching files...");
+      return cache.addAll(CACHE_ASSETS);
     })
   );
 });
 
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames
-          .filter((name) => name !== cacheName) // Remove old cache
-          .map((name) => caches.delete(name))
-      );
-    })
-  );
-});
-
+// Fetch event - Serve from cache first
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
+    caches.match(event.request).then((cachedResponse) => {
+      return cachedResponse || fetch(event.request);
+    })
+  );
+});
+
+// Activate event - Clean up old caches
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            console.log("Removing old cache:", key);
+            return caches.delete(key);
+          }
+        })
+      );
     })
   );
 });
